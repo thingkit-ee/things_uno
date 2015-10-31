@@ -15,11 +15,11 @@ void setup()
   resistance = analogRead(A1);
   oldResistance = resistance;
 
-      Serial.print("INITIAL ");
+   /*   Serial.print("INITIAL ");
     Serial.print(resistance);
     Serial.print(":");
     Serial.println(oldResistance);
-    
+    */
 }
 
  
