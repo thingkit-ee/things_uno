@@ -24,9 +24,18 @@ class LoRa
       delay(50);
     }
 
+    void LoRaBlinkOff()
+    {
+      analogWrite(red, 255);
+      analogWrite(blue, 0);
+      analogWrite(green, 0);
+    }
+
+      
+
   public:
     void LoRaConfig();
-    void LoRaSendAndReceive();
+    void LoRaSendAndReceive(String message);
 };
 #endif
  

@@ -1,6 +1,20 @@
 #include "Arduino.h"
 #include "LoRa.h"
 
+static char* getMeHex(char character)
+{
+  switch(character)
+  {
+    case 'A':
+      return "41";
+    case 'B':
+      return "42";
+    case 'C':
+      return "43";
+    default:
+      return "44";    
+  }
+}
 
 void LoRa::LoRaConfig()
 {
@@ -30,7 +44,7 @@ void LoRa::LoRaConfig()
   LoRaBlink();
   
   Serial.print("addr: ");                                                                                 //Set device address for your device!!!!!!!!!!!
-  Serial1.write("mac set devaddr 000011BDC\r\n");
+  Serial1.write("mac set devaddr 000011BD\r\n");
   delay(1000);
   while(Serial1.available()) Serial.write(Serial1.read());
   LoRaBlink();
@@ -68,43 +82,49 @@ void LoRa::LoRaConfig()
   analogWrite(blue, 0);
   analogWrite(green, 0);
 }
-
-void LoRa::LoRaSendAndReceive()
-{   //delay(20000);
-    analogWrite(red, 0);
-    analogWrite(blue, 255);
-    analogWrite(green, 255);
+void LoRa::LoRaSendAndReceive(String message)
+{   
+    int messageLength = message.length();
     Serial.print("Sending: ");
-    Serial1.write("mac tx un  cnf 1 AABBCC\r\n");                       //sended item!!!!!!!!!!
-    delay(1000);
-    if(Serial1.available()) 
+    Serial.println(message);
+    Serial1.write("mac tx uncnf 1 ");
+    
+    
+    for (int i = 0; i < messageLength; i++)
     {
-      Serial.write(Serial1.read());                                 //receive ok if sensing ok
-      delay(5000);
+      Serial1.print(message.charAt(i), HEX);
+      LoRaBlink();  
+      
     }
+    Serial1.write("\r\n");
+    LoRaBlinkOff();
+    delay(1000);
+    
+
     while(Serial1.available()) 
-    {  
-      char rx = Serial1.read();                                     //receive incomming message
-      Serial.print(rx); Serial.flush();
+    {
+      char rx = Serial1.read();
+      Serial.print(rx);
       if(rx == '1')
       {
-        for(int i=0; i<=10; i++)                                    //blink green of message is received 
-        {
-          analogWrite(red, 0);
-          analogWrite(blue, 255);
-          analogWrite(green, 255);
-          delay(50);
-          analogWrite(red, 255);
-          analogWrite(blue, 255);
-          analogWrite(green, 255);
-          delay(50);
-        }
+        Serial.println("Message received back!");
+      }
+      delay(10); 
+    }
+
+    delay(10000);
+    if (!Serial1.available())
+      return;
+
+    Serial.println("Got something from GW:");
+    while(Serial1.available()) 
+    {
+      char rx = Serial1.read();
+      Serial.print(rx);
+      if(rx == '1')
+      {
+        Serial.println("Message received back2!");
       }     
     }
- 
-  analogWrite(red, 255);
-  analogWrite(blue, 0);
-  analogWrite(green, 0);
-  //delay(500);
 }
 
