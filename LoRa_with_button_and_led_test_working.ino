@@ -22,3 +22,27 @@ void loop()
 }
 
 
+/*const int tiltPin = A0;
+const int ledPin = 11; 
+int tiltState = 0;
+
+void setup() {
+
+  pinMode(ledPin, OUTPUT);
+  pinMode(tiltPin, INPUT);
+
+  while(!Serial);
+  Serial.begin(57600);
+  
+}
+void loop(){
+  int newTiltState = digitalRead(tiltPin); 
+
+  if(newTiltState != tiltState) {
+      digitalWrite(ledPin, newTiltState);
+      Serial.println(newTiltState);     
+      tiltState = newTiltState;  
+  }
+
+}*/
+

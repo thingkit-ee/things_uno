@@ -30,25 +30,25 @@ void LoRa::LoRaConfig()
   LoRaBlink();
   
   Serial.print("addr: ");                                                                                 //Set device address for your device!!!!!!!!!!!
-  Serial1.write("mac set devaddr 000011BD\r\n");
+  Serial1.write("mac set devaddr 000011BDC\r\n");
   delay(1000);
   while(Serial1.available()) Serial.write(Serial1.read());
   LoRaBlink();
   
   Serial.print("nwkskey: ");                                                                              //Set NwkSkey key for your device!!!!!!!!!!!
-  Serial1.write("mac set nwkskey 0A1B2C3D4E5F0A1B2C3D4E5F0A1B2CBD\r\n");
+  Serial1.write("mac set nwkskey 2B7E151628AED2A6ABF7158809CF4F3C\r\n");
   delay(1000);
   while(Serial1.available()) Serial.write(Serial1.read());
   LoRaBlink();
   
   Serial.print("appskey: ");
-  Serial1.write("mac set appskey 112233445566778899AABBCCDDEEFFBD\r\n");                                  //Set AppSkey for your device!!!!!!!!!!
+  Serial1.write("mac set appskey 2B7E151628AED2A6ABF7158809CF4F3C\r\n");                                  //Set AppSkey for your device!!!!!!!!!!
   delay(1000);
   while(Serial1.available()) Serial.write(Serial1.read());
   LoRaBlink();
   
   Serial.print("adr: ");
-  Serial1.write("mac set adr on\r\n");
+  Serial1.write("mac set adr off\r\n");
   delay(1000);
   while(Serial1.available()) Serial.write(Serial1.read());
   LoRaBlink();
@@ -75,7 +75,7 @@ void LoRa::LoRaSendAndReceive()
     analogWrite(blue, 255);
     analogWrite(green, 255);
     Serial.print("Sending: ");
-    Serial1.write("mac tx cnf 1 AABBCC\r\n");                       //sended item!!!!!!!!!!
+    Serial1.write("mac tx un  cnf 1 AABBCC\r\n");                       //sended item!!!!!!!!!!
     delay(1000);
     if(Serial1.available()) 
     {
@@ -85,7 +85,7 @@ void LoRa::LoRaSendAndReceive()
     while(Serial1.available()) 
     {  
       char rx = Serial1.read();                                     //receive incomming message
-      Serial.println(rx); 
+      Serial.print(rx); Serial.flush();
       if(rx == '1')
       {
         for(int i=0; i<=10; i++)                                    //blink green of message is received 
@@ -100,7 +100,8 @@ void LoRa::LoRaSendAndReceive()
           delay(50);
         }
       }     
-    } 
+    }
+ 
   analogWrite(red, 255);
   analogWrite(blue, 0);
   analogWrite(green, 0);
