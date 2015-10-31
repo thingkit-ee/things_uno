@@ -7,19 +7,13 @@ LoRa LoRa_Lib;
  
 void setup() 
 {
-  while(!Serial);
+  //while(!Serial);
   Serial.begin(115200);
   Serial1.begin(57600);
   
   LoRa_Lib.LoRaConfig();                                        // Run config
   resistance = analogRead(A1);
   oldResistance = resistance;
-
-   /*   Serial.print("INITIAL ");
-    Serial.print(resistance);
-    Serial.print(":");
-    Serial.println(oldResistance);
-    */
 }
 
  
@@ -32,8 +26,6 @@ void loop()
     Serial.print(resistance);
     Serial.print(":");
     Serial.println(oldResistance);
-    
-    
     
     String dataToSend = "{A:";
     if ( resistance > 600 ){
@@ -49,10 +41,15 @@ void loop()
     }
     dataToSend += "}";
     
-    LoRa_Lib.LoRaSendAndReceive(dataToSend);       
+    LoRa_Lib.LoRaSendAndReceive(dataToSend);
+    Serial.println("LoRa status:");
     oldResistance = resistance;
   }
 
+    while(Serial1.available()) 
+    {
+      Serial.print((char)Serial1.read());  
+    }
 
   delay(10);
 }
